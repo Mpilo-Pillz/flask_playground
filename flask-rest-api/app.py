@@ -1,4 +1,6 @@
+from crypt import methods
 from enum import unique
+from unittest import result
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
@@ -45,6 +47,21 @@ product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
 # product_schema = ProductSchema(strict=True)
 # products_schema = ProductSchema(many=True, strict=True)
+
+@app.route('/product', methods=['POST'])
+def add_product():
+    name = request.json['name']
+    description = request.json['description']
+    price = request.json['price']
+    qty = request.json['qty']
+
+    new_product = Product(name, description, price, qty)
+    db.session.add(new_product)
+    db.session.commit()
+
+    return product_schema.jsonify(new_product)
+
+
 
 # Run Server
 if __name__ == '__main__':
