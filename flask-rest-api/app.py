@@ -1,4 +1,3 @@
-from email.policy import strict
 from enum import unique
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -11,7 +10,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 #Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
-app.config['SQLALCHEMY_TRACK_MoDIFICATiONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #Init db
 db = SQLAlchemy(app)
@@ -42,8 +41,10 @@ class ProductSchema(ma.Schema):
         fields = ('id', 'name', 'description', 'price', 'qty' )
 
 #Init Schema
-product_schema = ProductSchema(strict=True)
-products_schema = ProductSchema(many=True, strict=True)
+product_schema = ProductSchema()
+products_schema = ProductSchema(many=True)
+# product_schema = ProductSchema(strict=True)
+# products_schema = ProductSchema(many=True, strict=True)
 
 # Run Server
 if __name__ == '__main__':
