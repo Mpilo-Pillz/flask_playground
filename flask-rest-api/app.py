@@ -77,6 +77,7 @@ def get_product(id):
 @app.route('/product/<id>', methods=['PUT'])
 def update_product(id):
     product = Product.query.get(id)
+    # product = get_product(id)
 
     name = request.json['name']
     description = request.json['description']
@@ -88,10 +89,17 @@ def update_product(id):
     product.price = price
     product.qty = qty
 
-    
     db.session.commit()
 
     return product_schema.jsonify(product)    
+
+@app.route('/product/<id>', methods=['DELETE'])
+def delete_product(id):
+    # product = Product.query.get(id)
+    product = get_product(id)
+    db.session.delete(product)
+    db.session.commit()
+    return product_schema.jsonify(product) 
 
 # Run Server
 if __name__ == '__main__':
